@@ -473,3 +473,8 @@ The app opens at `http://localhost:5173`. Sign in with an account from your Entr
 ## Documentation
 
 - [Product Requirements Document — MVP 1](docs/PRD.md)
+
+## License
+
+TeamBrain is distributed under the MIT License. See [LICENSE](LICENSE).
+
