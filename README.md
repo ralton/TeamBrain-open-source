@@ -474,6 +474,7 @@ The app opens at `http://localhost:5173`. Sign in with an account from your Entr
 
 ## Documentation
 
+- [How to Use TeamBrain](docs/HOW_TO_USE.md) — role-based workflows for asking questions, finding standards, capturing and reviewing knowledge, ingestion, and the VS Code extension
 - [Product Requirements Document — MVP 1](docs/PRD.md)
 
 ## License
