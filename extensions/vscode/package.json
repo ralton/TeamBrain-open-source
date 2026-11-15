@@ -1,0 +1,99 @@
+{
+  "name": "teambrain-vscode",
+  "displayName": "TeamBrain Engineering Memory",
+  "description": "Governed engineering intelligence inside VS Code — ask questions, retrieve approved patterns, and submit learnings.",
+  "version": "1.0.0",
+  "publisher": "teambrain",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onView:teambrain.askView",
+    "onCommand:teambrain.ask",
+    "onCommand:teambrain.submitSelection",
+    "onCommand:teambrain.searchPatterns",
+    "onCommand:teambrain.configureApi"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "teambrain-sidebar",
+          "title": "TeamBrain",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "teambrain-sidebar": [
+        {
+          "type": "webview",
+          "id": "teambrain.askView",
+          "name": "Ask TeamBrain"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "teambrain.ask",
+        "title": "TeamBrain: Ask Question",
+        "category": "TeamBrain"
+      },
+      {
+        "command": "teambrain.submitSelection",
+        "title": "Submit Selection to TeamBrain",
+        "category": "TeamBrain"
+      },
+      {
+        "command": "teambrain.searchPatterns",
+        "title": "TeamBrain: Search Approved Patterns",
+        "category": "TeamBrain"
+      },
+      {
+        "command": "teambrain.configureApi",
+        "title": "TeamBrain: Configure API Endpoint",
+        "category": "TeamBrain"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "teambrain.submitSelection",
+          "group": "teambrain@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "TeamBrain",
+      "properties": {
+        "teambrain.apiUrl": {
+          "type": "string",
+          "default": "https://localhost:5001/api/v1",
+          "description": "The base URL for the TeamBrain REST API."
+        },
+        "teambrain.authToken": {
+          "type": "string",
+          "default": "",
+          "description": "Entra ID Bearer token for authenticating API requests."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^2.22.0",
+    "typescript": "^5.1.0"
+  }
+}

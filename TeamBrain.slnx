@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TeamBrain.Api/TeamBrain.Api.csproj" />
+    <Project Path="src/TeamBrain.Application/TeamBrain.Application.csproj" />
+    <Project Path="src/TeamBrain.Domain/TeamBrain.Domain.csproj" />
+    <Project Path="src/TeamBrain.Infrastructure/TeamBrain.Infrastructure.csproj" />
+    <Project Path="src/TeamBrain.Ingestion/TeamBrain.Ingestion.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TeamBrain.Api.Tests/TeamBrain.Api.Tests.csproj" />
+    <Project Path="tests/TeamBrain.Application.Tests/TeamBrain.Application.Tests.csproj" />
+    <Project Path="tests/TeamBrain.Infrastructure.Tests/TeamBrain.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>
