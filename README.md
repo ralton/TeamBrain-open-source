@@ -136,8 +136,9 @@ TeamBrain uses Entra ID for authentication. You need two app registrations befor
 1. Create another registration named `teambrain-web`
 2. Under **Authentication → Add a platform → Single-page application**
 3. Add redirect URIs:
-   - `http://localhost:5173` (local dev)
-   - `https://teambrain-dev-web.azurewebsites.net` (deployed)
+   - `http://localhost:5173` (local development)
+   
+   Add the redirect URI for your chosen frontend host when you deploy the web app. The Bicep and Terraform configurations in this repository provision the API and supporting Azure services; the CI workflow does not deploy the frontend.
 4. Under **API permissions → Add a permission → My APIs → teambrain-api**
    - Select the `user_impersonation` scope
 5. Note the **Application (client) ID** for the frontend — used in `VITE_ENTRA_CLIENT_ID`
