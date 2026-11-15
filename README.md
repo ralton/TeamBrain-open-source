@@ -40,7 +40,7 @@ React Web UI (Fluent UI + MSAL)
 
 **Auth:** Microsoft Entra ID (Azure AD) throughout — API and frontend.
 
-**Primary integrations:** GitHub (Repositories, Issues/Projects, Pull Requests), Azure DevOps, Asana, VS Code extension (planned).
+**Integrations:** GitHub repository, issue, and pull request access is implemented. The API also defines pluggable code repository and work item interfaces. Azure DevOps and Asana are referenced in the domain model and UI but do not yet have concrete service implementations. The VS Code extension is implemented; see [its documentation](extensions/vscode/README.md).
 
 ---
 
@@ -214,7 +214,7 @@ az account show --query "{name:name, id:id}"
 **1c. Populate your variables file:**
 ```bash
 cd infra/terraform
-cp environments/dev.tfvars terraform.tfvars
+Copy `environments/dev.tfvars` to the git-ignored `terraform.tfvars` file and edit `terraform.tfvars`.
 ```
 
 Open `terraform.tfvars` and replace the three placeholder values:
@@ -236,14 +236,14 @@ You should see: `Terraform has been successfully initialized!`
 
 **1e. Preview the deployment plan:**
 ```bash
-terraform plan -var-file=environments/dev.tfvars
+terraform plan -var-file=terraform.tfvars
 ```
 
 This prints every resource that will be created — ~28 resources. Review it to confirm the names and region match your expectations. No changes are made at this stage.
 
 **1f. Apply the plan:**
 ```bash
-terraform apply -var-file=environments/dev.tfvars
+terraform apply -var-file=terraform.tfvars
 ```
 
 Type `yes` when prompted. Deployment takes approximately 10–15 minutes. The slowest resources are Azure AI Search and the OpenAI model deployments.
@@ -297,7 +297,7 @@ terraform output app_insights_connection_string
 
 **Tearing down:**
 ```bash
-terraform destroy -var-file=environments/dev.tfvars
+terraform destroy -var-file=terraform.tfvars
 ```
 
 ---
@@ -364,9 +364,9 @@ export PATH="$HOME/.dotnet:$PATH"
 dotnet run --project src/TeamBrain.Api
 ```
 
-The API starts on `https://localhost:5001`. Open the Swagger UI at:
+The API starts on `https://localhost:7153` (HTTPS) and `http://localhost:5210` (HTTP), as configured in `src/TeamBrain.Api/Properties/launchSettings.json`. Open Swagger at:
 ```
-https://localhost:5001/swagger
+https://localhost:7153/swagger
 ```
 
 All endpoints require a Bearer token. Use the Authorize button in Swagger with a token acquired from Entra ID, or test via the frontend in Step 5.
@@ -385,7 +385,7 @@ Edit `.env.local` with your Entra ID values:
 ```env
 VITE_ENTRA_CLIENT_ID=<teambrain-web client-id from Step 0>
 VITE_ENTRA_TENANT_ID=<tenant-id from Step 0>
-VITE_API_BASE_URL=https://localhost:5001/api/v1
+VITE_API_BASE_URL=https://localhost:7153/api/v1
 ```
 
 Then install dependencies and start the dev server:
@@ -414,7 +414,8 @@ The app opens at `http://localhost:5173`. Sign in with an account from your Entr
 | Application CQRS — AI Query (Ask TeamBrain hybrid search & generation) | Done |
 | Azure Functions ingestion & search indexing pipeline (`TeamBrain.Ingestion`) | Done |
 | Service Bus queue integration (`ingestion-jobs`) | Done |
-| EF Core DbContext + entity configurations + migrations | Done |
+| EF Core DbContext + entity configurations | Done |
+| EF Core migrations | Not checked in; generate an initial migration using Step 3 |
 | Azure AI Search service (hybrid retrieval + vector indexer) | Done |
 | Azure OpenAI service (chat + embeddings) | Done |
 | Blob Storage service | Done |
@@ -462,9 +463,9 @@ The app opens at `http://localhost:5173`. Sign in with an account from your Entr
 
 ## Security Notes
 
-- All secrets stored in Azure Key Vault — never in config files, logs, or the search index.
+- Azure Key Vault is provisioned for secrets. Local development configuration uses the git-ignored `appsettings.Development.json`; configure deployed secrets and connection values in the hosting environment or Key Vault before deployment.
 - Secret scanner runs on every source artifact before storage or indexing.
-- Role-based access enforced at API level (not only UI): `reader`, `contributor`, `reviewer`, `admin`.
+- API endpoints use Entra ID bearer-token authentication. Fine-grained role-based authorization should be configured and verified for each deployment.
 - Search results filtered by repository and team permissions.
 - Quarantine flow: secret detected → content redacted → artifact flagged → admin notified → never indexed.
 
