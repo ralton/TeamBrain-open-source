@@ -214,7 +214,7 @@ az account show --query "{name:name, id:id}"
 **1c. Populate your variables file:**
 ```bash
 cd infra/terraform
-Copy `environments/dev.tfvars` to the git-ignored `terraform.tfvars` file and edit `terraform.tfvars`.
+cp environments/dev.tfvars terraform.tfvars
 ```
 
 Open `terraform.tfvars` and replace the three placeholder values:
